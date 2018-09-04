@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="interra_notification" default="main" basedir=".">
+  <tstamp>
+    <format property="NOW" pattern="YYYYMMddHHmmss"/>
+  </tstamp>
+  <property name="BUILD_DIR" value="${basedir}/build/"/>
+  <property name="BUILD_FILE">${BUILD_DIR}/${ant.project.name}.${NOW}.tar.gz</property>
+
+
+
+  <!-- Сборка проекта на продкашн -->
+  <target name="main" depends="clean, tar">
+  </target>
+
+
+
+  <!--  Файлы и папки необходимые для продкашена.
+        Используется tar задаче -->
+  <fileset id="app" dir="${basedir}">
+    <include name="src/**"/>
+    <exclude name="**/__pycache__/**"/>
+  </fileset>
+
+
+
+  <!-- Зачищает дирикторию где собирается проект
+       т.к. иногда попадают уже удаленные и неиспользуемые файлы-->
+  <target name="clean">
+    <mkdir dir="${BUILD_DIR}"></mkdir>
+    <delete failonerror="true">
+      <fileset dir="${BUILD_DIR}" includes="**/**"/>
+    </delete>
+  </target>
+
+
+
+  <!-- Архивирует папку билда -->
+  <target name="tar">
+    <tar destfile="${BUILD_FILE}" compression="gzip">
+      <fileset refid="app"/>
+    </tar>
+  </target>
+</project>
